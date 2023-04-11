@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
   <title>Проект "Комменты"</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -35,7 +33,7 @@
   const comentElement = document.querySelectorAll('.comment');
   const userComentElement = document.getElementById("userComent");
   const allCommentsElements = document.querySelectorAll("comments");
-  //делаем запрос в API
+
   fetch("https://webdev-hw-api.vercel.app/api/v1/:cimvol-key/comments",
     {
       method: "GET",
@@ -59,7 +57,6 @@
     });
 
   let coment = [];
-
   const renderComent = () => {
     const comentHTML = coment.map((coment) => {
       return `<li class="comment">
@@ -92,7 +89,6 @@
     }
   }
   renderComent();
-
   likesFun = () => {
     const buttonLike = document.querySelectorAll('.like-button');
     for (const buttonLikes of buttonLike) {
@@ -107,9 +103,6 @@
       });
     }
   };
-
-  // <img src = "." onerror="alert('ха-ха, ваши данные украдены!');">
-
   likesFun();
   buttonElement.addEventListener('click', () => {
     nameInputElement.classList.remove('error');
@@ -129,8 +122,6 @@
       text: userComentElement.value,
       laiks: 0,
     });
-   
-    //делаем запрос в API
     fetch("https://webdev-hw-api.vercel.app/api/v1/:cimvol-key/comments",
       {
         method: "POST",
@@ -162,7 +153,6 @@
                 isLiked: false,
               };
             });
-           
             coment = ourComments;
             renderComent();
             likesFun();
@@ -175,6 +165,5 @@
       });
     renderComent();
     likesFun();
-
 </script>
 </html>
