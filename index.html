@@ -133,12 +133,12 @@
           text: userComentElement.value,
         }),
       })
-      .then((response)=> {
+      .then((response) => {
         if (response.status === 500){
-          throw new Error ('Server drop!');
+          return Promise.reject('Server drop!');
         }
         if (nameInputElement.value.length <= 3  || userComentElement.value.length <= 3) {
-      throw new Error('Chort name or comment!');
+          return Promise.reject('Chort name or comment!');
     } else {
       return response.json();
     }
