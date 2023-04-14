@@ -115,11 +115,6 @@
       userComentElement.classList.add('error');
       return;
     }
-    if (nameInputElement.value.length === 3  || userComentElement.value.length === 3) {
-      alert ("Вы ввели слишком короткое имя или комментарий");
-      return;
-    }
-   
 
     
     buttonElement.disabled = true;
@@ -138,13 +133,16 @@
           text: userComentElement.value,
         }),
       })
-        .then((response) => {
-          if (response.status === 201) { 
-            return response.json();
-          } else {
-            return Promise.reject("Сервер упал");
-          }
-       })
+      .then((response)=> {
+        if (response.status === 500){
+          throw new Error ('Server drop!');
+        }
+        if (nameInputElement.value.length <= 3  || userComentElement.value.length <= 3) {
+      throw new Error('Chort name or comment!');
+    } else {
+      return response.json();
+    }
+      })
         .then((responseData) => {
         fetch("https://webdev-hw-api.vercel.app/api/v1/:cimvol-key/comments",
           {
