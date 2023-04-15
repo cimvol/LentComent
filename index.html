@@ -22,9 +22,11 @@
 </body>
 
 <script>
+
   function searchHtml(htmlString = "") {
     return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
+
   const buttonElement = document.getElementById("button");
   const nameInputElement = document.getElementById("nameInput");
   const listElement = document.getElementById("list");
@@ -38,13 +40,13 @@
       method: "GET",
     })
     .then((response) => {
-    return response.json();
+        return response.json();
     })
     .then((responseData) => {
       const ourComments = responseData.comments.map((comment) => {
         return {
           name: comment.author.name,
-          date: comment.date,
+          date: new Date(comment.date).toLocaleString().slice(0, -3),
           text: comment.text,
           likes: comment.likes,
           isLiked: false,
@@ -56,6 +58,7 @@
     });
 
   let coment = [];
+
   const renderComent = () => {
     const comentHTML = coment.map((coment) => {
       return `<li class="comment">
@@ -83,11 +86,11 @@
     for (const comentText of comentTextElement) {
       comentText.addEventListener('click', () => {
         userComentElement.value = comentText.innerHTML;
-
       });
     }
-  }
+  };
   renderComent();
+
   likesFun = () => {
     const buttonLike = document.querySelectorAll('.like-button');
     for (const buttonLikes of buttonLike) {
@@ -102,6 +105,7 @@
       });
     }
   };
+
   likesFun();
   buttonElement.addEventListener('click', () => {
     nameInputElement.classList.remove('error');
@@ -112,16 +116,15 @@
       return;
     }
 
-    let today = new Date().toLocaleString();
     buttonElement.disabled = true;
     buttonElement.textContent = "Публикуется";
     coment.push({
       name: nameInputElement.value,
-      date: today,
+      date: new Date(coment.date).toLocaleString().slice(0, -3),
       text: userComentElement.value,
       laiks: 0,
     });
-    fetch("https://webdev-hw-api.vercel.app/api/v1/:cimvol-key/comments",
+       fetch("https://webdev-hw-api.vercel.app/api/v1/:cimvol-key/comments",
       {
         method: "POST",
         body: JSON.stringify({
@@ -130,19 +133,25 @@
         }),
       })
       .then((response) => {
+        if (response.status === 500){
+          console.log(response);
+           throw new Error('Сервер упал');
+        }
+       else if (response.status === 400 ) {
+        throw new Error('Ошибка в сообщении');
+    } else {
       return response.json();
-       })
-      .then((responseData) => {
+    }
+      })
+        .then((responseData) => {
         fetch("https://webdev-hw-api.vercel.app/api/v1/:cimvol-key/comments",
           {
             method: "GET",
           })
-          .then((response) => {
-           return response.json();
+        .then((response) => {
+            return response.json();
           })
-          .then((responseData) => {
-            buttonElement.disabled = false;
-            buttonElement.textContent = "Написать";
+        .then((responseData) => {
             const ourComments = responseData.comments.map((comment) => {
               return {
                 name: comment.author.name,
@@ -151,14 +160,29 @@
                 likes: comment.likes,
                 isLiked: false,
               };
-            });
+            })
+            buttonElement.disabled = false;
+            buttonElement.textContent = "Написать";
+            nameInputElement.value = "";
+            userComentElement.value = "";
             coment = ourComments;
             renderComent();
             likesFun();
-            nameInputElement.value = "";
-            userComentElement.value = "";
+          }) 
+        })
+        .catch((error) => {
+          console.log(error);
+            if (error.message === "Сервер упал") {
+            alert("Ты сделал ошибку в запросе, исправь данные и попробуй снова");
+            }
+            else if (error.message === "Ошибка в сообщении") { 
+              alert("Слишком короткий коментарий или имя");
+            } else {
+              alert('Похоже что-то пошло не так, повторите попытку позже');
+            }
           });
-        });
+          buttonElement.disabled = false;
+          buttonElement.textContent = "Написать";
         coment = responseData.comments;
         renderComent();
       });
