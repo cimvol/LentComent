@@ -116,7 +116,6 @@
       return;
     }
 
-    
     buttonElement.disabled = true;
     buttonElement.textContent = "Публикуется";
     coment.push({
@@ -135,10 +134,11 @@
       })
       .then((response) => {
         if (response.status === 500){
-          return Promise.reject('Server drop!');
+          console.log(response);
+           throw new Error('Сервер упал');
         }
-        if (nameInputElement.value.length <= 3  || userComentElement.value.length <= 3) {
-          return Promise.reject('Chort name or comment!');
+       else if (response.status === 400 ) {
+        throw new Error('Ошибка в сообщении');
     } else {
       return response.json();
     }
@@ -171,10 +171,18 @@
           }) 
         })
         .catch((error) => {
-            buttonElement.disabled = false;
-            buttonElement.textContent = "Написать";
-            alert('Похоже что-то пошло не так, повторите попытку позже');
+          console.log(error);
+            if (error.message === "Сервер упал") {
+            alert("Ты сделал ошибку в запросе, исправь данные и попробуй снова");
+            }
+            else if (error.message === "Ошибка в сообщении") { 
+              alert("Слишком короткий коментарий или имя");
+            } else {
+              alert('Похоже что-то пошло не так, повторите попытку позже');
+            }
           });
+          buttonElement.disabled = false;
+          buttonElement.textContent = "Написать";
         coment = responseData.comments;
         renderComent();
       });
