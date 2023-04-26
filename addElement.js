@@ -1,5 +1,6 @@
-import { renderComent } from "./modulRenderComent.js";
-import { likesFun } from "./modulLikesFun.js";
+import { renderComent } from "./renderComent.js";
+import { likesFun } from "./likesFun.js";
+import { polComent } from "./api.js";
 
 
 export function addElement (e, coment) {
@@ -25,29 +26,7 @@ export function addElement (e, coment) {
     const buttonElement = document.getElementById("button");
     buttonElement.addEventListener('click', (e) => addElement(e, coment)); 
 
-    fetch( "https://webdev-hw-api.vercel.app/api/user/login",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          name: nameInputElement.value,
-          text: userComentElement.value,
-          headers: {
-            Authorization:`Bearer ${token}`,
-          },
-        }),
-      })
-      .then((response) => {
-        if (response.status === 500) {
-          console.log(response);
-          throw new Error('Сервер упал');
-        }
-        else if (response.status === 400) {
-           throw new Error('Ошибка в сообщении');
-        } else {
-          return response.json();
-        }
-      })
-      .then((responseData) => {
+    dobComent(text, token).then((responseData) => {
         funcApi()
         e.target.disabled = false;
         e.target.textContent = "Написать";
@@ -71,16 +50,8 @@ export function addElement (e, coment) {
     }
        let token = "asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 
-  export    function funcApi() { 
-        fetch("https://webdev-hw-api.vercel.app/api/v2/slava-tsym/comments",
-        {
-          method: "GET",
-          headers: {
-            Authorization:`Bearer ${token}`,
-          },
-        }).then((response) => {
-          return response.json();
-        }).then((responseData) => {
+  export function funcApi() { 
+        return polComent(token).then((responseData) => {
           const ourComments = responseData.comments.map((comment) => {
             return {
               name: comment.author.name,

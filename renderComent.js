@@ -1,4 +1,5 @@
-//import { addElement, funcApi } from "./modulAddElement.js";
+
+//import { polComent } from "./api.js";
 
 function searchHtml(htmlString = "") {
   return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
