@@ -2,6 +2,15 @@ body {
     margin: 0;
   }
 
+  #loginInput{
+    text-align: center;
+  }
+
+  #passwordInput {
+    text-align: center;
+  }
+
+
   .container {
     font-family: Helvetica;
     color: #ffffff;
@@ -33,6 +42,9 @@ body {
     filter: drop-shadow(0px 20px 67px rgba(0, 0, 0, 0.08));
     border-radius: 20px;
   }
+  /*#formAdd {
+    text-align: center;
+  }*/
 
   .comments {
     display: flex;
@@ -104,6 +116,7 @@ body {
     font-family: Helvetica;
     border-radius: 8px;
     border: none;
+    
   }
 
   .add-form-name {

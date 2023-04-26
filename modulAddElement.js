@@ -1,13 +1,8 @@
-import {renderComent} from "./modulRenderComent.js";
-import {likesFun} from "./modulLikesFun.js";
-
-
-const nameInputElement = document.getElementById("nameInput");
-const userComentElement = document.getElementById("userComent");
+import { renderComent } from "./modulRenderComent.js";
+import { likesFun } from "./modulLikesFun.js";
 
 
 export function addElement (e, coment) {
-    console.log(e);
     nameInputElement.classList.remove('error');
     userComentElement.classList.remove('error');
     if (nameInputElement.value === "" || userComentElement.value === "") {
@@ -24,12 +19,21 @@ export function addElement (e, coment) {
       text: userComentElement.value,
       laiks: 0,
     });
-    fetch("https://webdev-hw-api.vercel.app/api/v1/:cimvol-key/comments",
+
+    const nameInputElement = document.getElementById("nameInput");
+    const userComentElement = document.getElementById("userComent");
+    const buttonElement = document.getElementById("button");
+    buttonElement.addEventListener('click', (e) => addElement(e, coment)); 
+
+    fetch( "https://webdev-hw-api.vercel.app/api/user/login",
       {
         method: "POST",
         body: JSON.stringify({
           name: nameInputElement.value,
           text: userComentElement.value,
+          headers: {
+            Authorization:`Bearer ${token}`,
+          },
         }),
       })
       .then((response) => {
@@ -38,40 +42,13 @@ export function addElement (e, coment) {
           throw new Error('Сервер упал');
         }
         else if (response.status === 400) {
-          throw new Error('Ошибка в сообщении');
+           throw new Error('Ошибка в сообщении');
         } else {
           return response.json();
         }
       })
       .then((responseData) => {
         funcApi()
-
-        // fetch("https://webdev-hw-api.vercel.app/api/v1/:cimvol-key/comments",
-        //   {
-        //     method: "GET",
-        //   })
-        //   .then((response) => {
-        //     return response.json();
-        //   })
-        //   .then((responseData) => {
-        //     const ourComments = responseData.comments.map((comment) => {
-        //       return {
-        //         name: comment.author.name,
-        //         date: comment.date,
-        //         text: comment.text,
-        //         likes: comment.likes,
-        //         isLiked: false,
-        //       };
-        //     })
-        //     buttonElement.disabled = false;
-        //     buttonElement.textContent = "Написать";
-        //     nameInputElement.value = "";
-        //     userComentElement.value = "";
-        //     coment = ourComments;
-        //     console.log(coment);
-        //     renderComent(coment);
-        //     likesFun();
-        //   })
         e.target.disabled = false;
         e.target.textContent = "Написать";
         nameInputElement.value = "";
@@ -86,21 +63,24 @@ export function addElement (e, coment) {
         }
         else if (error.message === "Ошибка в сообщении") {
           alert("Слишком короткий коментарий или имя");
-        } else {
+        } 
+        else {
           alert('Похоже что-то пошло не так, повторите попытку позже');
         }
       });
-      }
+    }
+       let token = "asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 
   export    function funcApi() { 
-        fetch("https://webdev-hw-api.vercel.app/api/v1/:cimvol-key/comments",
+        fetch("https://webdev-hw-api.vercel.app/api/v2/slava-tsym/comments",
         {
           method: "GET",
-        })
-        .then((response) => {
+          headers: {
+            Authorization:`Bearer ${token}`,
+          },
+        }).then((response) => {
           return response.json();
-        })
-        .then((responseData) => {
+        }).then((responseData) => {
           const ourComments = responseData.comments.map((comment) => {
             return {
               name: comment.author.name,
@@ -110,9 +90,9 @@ export function addElement (e, coment) {
               isLiked: false,
             };
           });
-        //   coment = ourComments;
-        //   console.log(coment);
           renderComent(ourComments);
           likesFun();
         });
-      }
+     }
+      
+      
