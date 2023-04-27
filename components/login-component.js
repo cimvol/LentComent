@@ -3,8 +3,18 @@ import{ renderComent } from "../renderComent.js";
 
 
 export function renderloginComponent({enterButtonElement, appEl, setToken}) {
+
+  let isLoginMode = false;
+
+  const renderForm = () => {
     const appHtml = 
-    ` <h3>Форма входа:</h3>
+    ` <h3>Форма ${isLoginMode ? 'входа' : 'регистрации'}</h3>
+    ${isLoginMode ? '' : 
+    ` Имя: <input id="newNameInput" 
+    type="password"/>
+    <br>
+    <br>`}
+     
       Логин: <input id="loginInput" type="text"/>
       <br>
       <br>
@@ -12,7 +22,10 @@ export function renderloginComponent({enterButtonElement, appEl, setToken}) {
       <br>
       <br>
       <div>
-        <button id="entranceButton">Войти</button>
+        <button id="entranceButton">${isLoginMode ? 'Войти' : 'Зарегистрироваться'}</button>
+        <br>
+        <br>
+        <button id="toggleButton">Перейти   ${isLoginMode ? 'к регистрации' : 'ко входу'}</button>
       </div>
     </div>`;
 
@@ -31,7 +44,7 @@ export function renderloginComponent({enterButtonElement, appEl, setToken}) {
         alert('Введите password');
         return;
       }
-      
+
       loginGet({
         login: "login",
         password: "password"
@@ -44,4 +57,10 @@ export function renderloginComponent({enterButtonElement, appEl, setToken}) {
 
       })
     });
-}
+    document.getElementById("toggleButton").addEventListener('click', () => {
+      isLoginMode = !isLoginMode
+      renderForm();
+    });
+  };
+  renderForm();
+  }
