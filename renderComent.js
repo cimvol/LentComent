@@ -1,37 +1,28 @@
 
 //import { polComent } from "./api.js";
+import { renderloginComponent } from "./components/login-component.js";
 
-function searchHtml(htmlString = "") {
+export function searchHtml(htmlString = "") {
   return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
-let token = "asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
-//token = null;
+export let token = "asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
+token = null;
 
 export const renderComent = (coment) => {
-const appEl = document.getElementById("app");
+  const enterButtonElement = document.getElementById("entranceButton");
+const appEl = document.getElementById('app');
   if(!token) {
-    const appHtml = 
-    ` <h3>Форма входа:</h3>
-      Логин: <input id="loginInput" type="text"/>
-      <br>
-      <br>
-      Пароль: <input id="passwordInput" type="password"/>
-      <br>
-      <br>
-      <div>
-        <button id="entranceButton">Войти</button>
-      </div>
-    </div>`;
-    appEl.innerHTML = appHtml;
-
-    document.getElementById("entranceButton").addEventListener('click', () => {
-      token = "asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
-      renderComent();
+   renderloginComponent({
+      enterButtonElement,
+      appEl, 
+      setToken: (newToken) => {
+      token = newToken;
+    },
     });
     return;
   }
-
+  
   const comentHTML = coment.map((coment) => {
     return `<li class="comment">
         <div class="comment-header">
@@ -79,6 +70,7 @@ const appEl = document.getElementById("app");
 
     const listElement = document.getElementById("list");
     const buttonElement = document.getElementById("button");
+   
 
     const comentTextElement = document.querySelectorAll(".comment-text");
     for (const comentText of comentTextElement) {
