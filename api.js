@@ -1,50 +1,51 @@
 
-export function polComent(token) {
+
+export function polComent({ token }) {
       return fetch ("https://webdev-hw-api.vercel.app/api/v2/slava-tsym/comments",{
         method: "GET",
         headers: {
             Authorization: token,
         },
       }).then((response) => {
-        if(response === 401) {
-            throw new Error ("Нет авторизации")
+        if(response.status === 401) {
+            throw new Error ("Нет авторизации");
         }
         return response.json();
       });
     }
   
-export function dobComent (text, token) {
+export function dobComent ({ text, token }) {
     return fetch( "https://webdev-hw-api.vercel.app/api/user/login",
     {
       method: "POST",
       body: JSON.stringify({
-        name: nameInputElement.value,
-        text: userComentElement.value,
+        text,
+        //name: nameInputElement.value,
+        //text: userComentElement.value,
         headers: {
-          Authorization:`Bearer ${token}`,
+          Authorization:`${token}`,
         },
       }),
     })
     .then((response) => {
       if (response.status === 500) {
-        console.log(response);
         throw new Error('Сервер упал');
       }
       else if (response.status === 400) {
          throw new Error('Ошибка в сообщении');
       } else {
         return response.json();
-      }
-    })
-}
+      };
+    });
+   }
 
-export function loginGet(login, password) {
+export function loginGet({ login, password }) {
   return fetch( "https://webdev-hw-api.vercel.app/api/user/login",
     {
       method: "POST",
       body: JSON.stringify({
         login,
-        password
+        password,
       }),
     }).then((response) => {
       if(response.status === 400) {
@@ -54,7 +55,7 @@ export function loginGet(login, password) {
       });
     }
 
-    export function registUser(login, password, name) {
+export function registUser({ login, password, name }) {
       return fetch( "https://webdev-hw-api.vercel.app/api/user",
         {
           method: "POST",
@@ -69,4 +70,4 @@ export function loginGet(login, password) {
           }
             return response.json();
           });
-        }
+   }

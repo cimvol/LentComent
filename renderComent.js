@@ -6,12 +6,11 @@ export function searchHtml(htmlString = "") {
   return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
-export let token = "asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
-token = null;
+ 
 
 export const renderComent = (coment) => {
   const enterButtonElement = document.getElementById("entranceButton");
-const appEl = document.getElementById('app');
+  const appEl = document.getElementById('app');
   if(!token) {
    renderloginComponent({
       enterButtonElement,
@@ -65,12 +64,12 @@ const appEl = document.getElementById('app');
               class="add-form-button">Написать</button>
             </div>
           </div>
-          </div>`
-          appEl.innerHTML = appHtml;
+          </div>`;
 
-    const listElement = document.getElementById("list");
-    const buttonElement = document.getElementById("button");
-   
+          const listElement = document.getElementById("list");
+          const buttonElement = document.getElementById("button");
+
+          appEl.innerHTML = appHtml;
 
     const comentTextElement = document.querySelectorAll(".comment-text");
     for (const comentText of comentTextElement) {

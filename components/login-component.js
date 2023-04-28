@@ -1,5 +1,5 @@
 import { loginGet, registUser } from "../api.js";
-import{ renderComent } from "../renderComent.js";
+import{ renderComent } from "./renderComent.js";
 
 
 export function renderloginComponent({enterButtonElement, appEl, setToken}) {
@@ -48,8 +48,8 @@ export function renderloginComponent({enterButtonElement, appEl, setToken}) {
         }
   
         loginGet({
-          login: "login",
-          password: "password"
+          login: login,
+          password: password,
         }).then((user) => {
           setToken(`Bearer ${user.user.token}`);
           renderComent();
@@ -78,8 +78,8 @@ export function renderloginComponent({enterButtonElement, appEl, setToken}) {
         }
   
         registUser({
-          login: "login",
-          password: "password",
+          login: login,
+          password: password,
           name: name,
         }).then((user) => {
           setToken(`Bearer ${user.user.token}`);
