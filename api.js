@@ -1,10 +1,10 @@
 
 
-export function polComent({ token }) {
+export function polComent({token}) {
       return fetch ("https://webdev-hw-api.vercel.app/api/v2/slava-tsym/comments",{
         method: "GET",
         headers: {
-            Authorization: token,
+            Authorization: `${token}`,
         },
       }).then((response) => {
         if(response.status === 401) {
@@ -15,18 +15,15 @@ export function polComent({ token }) {
     }
   
 export function dobComent ({ text, token }) {
-    return fetch( "https://webdev-hw-api.vercel.app/api/user/login",
-    {
+    return fetch( "https://webdev-hw-api.vercel.app/api/v2/slava-tsym/comments",{
       method: "POST",
       body: JSON.stringify({
-        text,
-        //name: nameInputElement.value,
-        //text: userComentElement.value,
-        headers: {
-          Authorization:`${token}`,
-        },
+       text,
       }),
-    })
+        headers: {
+          Authorization: token,
+        },
+      })
     .then((response) => {
       if (response.status === 500) {
         throw new Error('Сервер упал');

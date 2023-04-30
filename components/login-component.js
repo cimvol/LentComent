@@ -1,5 +1,5 @@
 import { loginGet, registUser } from "../api.js";
-import{ renderComent } from "./renderComent.js";
+import{ renderComent } from "../renderComent.js";
 
 
 export function renderloginComponent({enterButtonElement, appEl, setToken}) {

@@ -1,14 +1,13 @@
 
-//import { polComent } from "./api.js";
 import { renderloginComponent } from "./components/login-component.js";
+import { addElement } from "./addElement.js";
 
 export function searchHtml(htmlString = "") {
   return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
- 
 
-export const renderComent = (coment) => {
+export const renderComent = ({coment, token}) => {
   const enterButtonElement = document.getElementById("entranceButton");
   const appEl = document.getElementById('app');
   if(!token) {
@@ -66,10 +65,11 @@ export const renderComent = (coment) => {
           </div>
           </div>`;
 
+          appEl.innerHTML = appHtml;
+
           const listElement = document.getElementById("list");
           const buttonElement = document.getElementById("button");
-
-          appEl.innerHTML = appHtml;
+          buttonElement.addEventListener('click',(e)  => addElement({e, coment }));
 
     const comentTextElement = document.querySelectorAll(".comment-text");
     for (const comentText of comentTextElement) {
