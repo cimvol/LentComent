@@ -1,20 +1,36 @@
+import { renderComent } from "./renderComent.js";
+import { likesFun } from "./main.js";
+import { addElement } from "./addElement.js";
 
+export function funcApi() {
+    return polComent().then((responseData) => {
+      const coment = responseData.comments.map((comment) => {
+        return {
+          name: comment.author.name,
+          date: new Date(comment.date).toLocaleString().slice(0, -3),
+          text: comment.text,
+          likes: comment.likes,
+          isLiked: false,
+        };
+      });
+      renderComent({coment}); 
+      likesFun();
+    });
+ }
 
-export function polComent({token}) {
+export function polComent() {
       return fetch ("https://webdev-hw-api.vercel.app/api/v2/slava-tsym/comments",{
         method: "GET",
-        headers: {
-            Authorization: `${token}`,
-        },
       }).then((response) => {
         if(response.status === 401) {
             throw new Error ("Нет авторизации");
         }
         return response.json();
       });
-    }
+  }
   
 export function dobComent ({ text, token }) {
+  console.log(text);
     return fetch( "https://webdev-hw-api.vercel.app/api/v2/slava-tsym/comments",{
       method: "POST",
       body: JSON.stringify({
@@ -33,10 +49,12 @@ export function dobComent ({ text, token }) {
       } else {
         return response.json();
       };
-    });
-   }
+    })
+    .then(()=> funcApi());
+  }
 
 export function loginGet({ login, password }) {
+
   return fetch( "https://webdev-hw-api.vercel.app/api/user/login",
     {
       method: "POST",
@@ -50,7 +68,7 @@ export function loginGet({ login, password }) {
       }
         return response.json();
       });
-    }
+  }
 
 export function registUser({ login, password, name }) {
       return fetch( "https://webdev-hw-api.vercel.app/api/user",
@@ -67,4 +85,4 @@ export function registUser({ login, password, name }) {
           }
             return response.json();
           });
-   }
+  }

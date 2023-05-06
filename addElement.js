@@ -1,54 +1,38 @@
-import { renderComent } from "./renderComent.js";
-import { likesFun } from "./likesFun.js";
-import { polComent } from "./api.js";
+
+//импортируем функции из других модулей
 import { dobComent } from "./api.js";
+import { funcApi } from "./api.js";
 
-export function funcApi() { 
-    
-  let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
-    return polComent({token}).then((responseData) => {
-      const coment = responseData.comments.map((comment) => {
-        return {
-          name: comment.author.name,
-          date: new Date(comment.date).toLocaleString().slice(0, -3),
-          text: comment.text,
-          likes: comment.likes,
-          isLiked: false,
-        };
-      });
-      renderComent( {coment, token} ); // когда изменяю скобки появляется окно регистрации нового пользователя
-      likesFun();
-    });
- }
-
-export function addElement ({ e, coment }) {
-  const nameInputElement = document.getElementById("nameInput");
-  const userComentElement = document.getElementById("userComent");
+// Данная функция отвечает за добавление нового комментария
+export function addElement ({e, coment}) {
+  // инициализация переменных по их id
+    const nameInputElement = document.getElementById("nameInput");
+    const textInputElement = document.getElementById("text-input");
+// проверяем наличие 
     nameInputElement.classList.remove('error');
-    userComentElement.classList.remove('error');
-    if (nameInputElement.value === "" || userComentElement.value === "") {
-      nameInputElement.classList.add('error');
-      userComentElement.classList.add('error');
-      return;
-    }
+    textInputElement.classList.remove('error');
+    if (nameInputElement.value === "" || textInputElement.value === "") {
+     nameInputElement.classList.add('error');
+     textInputElement.classList.add('error');
+     return;
+   }
 
-    e.target.disabled = true;
-    e.target.textContent = "Публикуется";
+     e.target.disabled = true;
+     e.target.textContent = "Публикуется";
     coment.push({
       name: nameInputElement.value,
       date: new Date(coment.date).toLocaleString().slice(0, -3),
-      text: userComentElement.value,
+      text: textInputElement.value,
       laiks: 0,
     });
-    const text = userComentElement.value;
-    const token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
+    //const token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 
     dobComent({text, token}).then((responseData) => {
         funcApi();
         e.target.disabled = false;
         e.target.textContent = "Написать";
         nameInputElement.value = "";
-        userComentElement.value = "";
+        textInputElement.value = "";
      })
       .catch((error) => {
         e.target.disabled = false;
@@ -64,8 +48,3 @@ export function addElement ({ e, coment }) {
         }
       });
     }
-     
-
-
-      
-      

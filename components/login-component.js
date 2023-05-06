@@ -1,99 +1,42 @@
-import { loginGet, registUser } from "../api.js";
-import{ renderComent } from "../renderComent.js";
+//импортируем другие функции в данный модуль
+import { funcApi, loginGet, registUser } from "../api.js";
 
-
-export function renderloginComponent({enterButtonElement, appEl, setToken}) {
-
-  let isLoginMode = false;
-
-  const renderForm = () => {
-    const appHtml = 
-    ` <h3>Форма ${isLoginMode ? 'входа' : 'регистрации'}</h3>
-    ${isLoginMode ? '' : 
-    ` Имя: <input id="newNameInput" 
-    type="text"/>
-    <br>
-    <br>`}
-     
-      Логин: <input id="loginInput" type="text"/>
-      <br>
-      <br>
-      Пароль: <input id="passwordInput" type="password"/>
-      <br>
-      <br>
-      <div>
-        <button id="entranceButton">${isLoginMode ? 'Войти' : 'Зарегистрироваться'}</button>
-        <br>
-        <br>
-        <button id="toggleButton">Перейти   ${isLoginMode ? 'к регистрации' : 'ко входу'}</button>
-      </div>
-    </div>`;
-
-    appEl.innerHTML = appHtml;
-     
+// Запускаем функцию renderloginComponent и передаем туда в качестве 
+// аргумента setToken и setUser
+export function renderloginComponent( {setToken, setUser} ) {
+ // находим кнопку по ее id и вешаем на нее обработчик клика 
     document.getElementById("entranceButton").addEventListener('click', () => {
-
-      if(isLoginMode) {
+  // инициализируем переменные login и password по их id
         const login = document.getElementById("loginInput").value;
         const password = document.getElementById("passwordInput").value;
-  
+// делаем проверку если не введен login просим пользователя 
+// ввести его выводя сообщение в alert
         if(!login) {
           alert('Введите login');
           return;
         }
-  
+  // делаем проверку если не введен password просим пользователя 
+// ввести его выводя сообщение в alert
         if(!password) {
           alert('Введите password');
           return;
         }
-  
+    // если все проверки пройдены запускаем функцию loginGet
+    // передаем в эту функцию два аргумента login и password
         loginGet({
           login: login,
           password: password,
-        }).then((user) => {
-          setToken(`Bearer ${user.user.token}`);
-          renderComent();
-        }).catch(error => {
-          // TODO: Выводить alert красиво
-          alert(error.message);
         })
-      } else {
-        const name = document.getElementById("newNameInput").value;
-        const login = document.getElementById("loginInput").value;
-        const password = document.getElementById("passwordInput").value;
-
-        if(!name) {
-          alert('Введите name');
-          return;
-        }
-  
-        if(!login) {
-          alert('Введите login');
-          return;
-        }
-  
-        if(!password) {
-          alert('Введите password');
-          return;
-        }
-  
-        registUser({
-          login: login,
-          password: password,
-          name: name,
-        }).then((user) => {
+        .then((user) => {
+          // вот здесь не понимаю что происходит???
           setToken(`Bearer ${user.user.token}`);
-          renderComent();
-        }).catch(error => {
-          // TODO: Выводить alert красиво
-          alert(error.message);
+           // вот здесь не понимаю что происходит???
+          setUser(user.user)
+         funcApi();
         })
+        //здесь ловим ошибку если она есть
+        .catch(error => {
+          alert(error.message);
+        });
       }
-    });
-    document.getElementById("toggleButton").addEventListener('click', () => {
-      isLoginMode = !isLoginMode
-      renderForm();
-    });
-  };
-  renderForm();
-  }
+    )}

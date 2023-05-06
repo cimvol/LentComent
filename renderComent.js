@@ -1,27 +1,25 @@
 
+// В этом блоке мы импортируем функции из других модулей в этот модуль
 import { renderloginComponent } from "./components/login-component.js";
+import { searchHtml } from "./main.js";
 import { addElement } from "./addElement.js";
+import { renderForm } from "./renderForm.js";
+import { dobComent, funcApi, polComent } from "./api.js";
 
-export function searchHtml(htmlString = "") {
-  return htmlString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-}
+//здесь мы инициализируем переменные 'token', 'user'
+let token = null;
+let user = null;
 
-
-export const renderComent = ({coment, token}) => {
-  const enterButtonElement = document.getElementById("entranceButton");
+// Здесь запускается функция отрисовки страницы 
+//нашего приложения, в которую в качестве аргумента 
+// передается переменная "coment"
+export const renderComent = ({ coment }) => {
+  // находим элемент на странице index.html  по его id
   const appEl = document.getElementById('app');
-  if(!token) {
-   renderloginComponent({
-      enterButtonElement,
-      appEl, 
-      setToken: (newToken) => {
-      token = newToken;
-    },
-    });
-    return;
-  }
-  
-  const comentHTML = coment.map((coment) => {
+  //let isLoginMode = true;
+  // Отрисовываем наши коментарии
+  const comentHTML = coment
+  .map((coment) => {
     return `<li class="comment">
         <div class="comment-header">
           <div>${searchHtml(coment.name)} </div>
@@ -41,36 +39,47 @@ export const renderComent = ({coment, token}) => {
       </li>`;
     }).join('');
 
+    // Отрисовывается форма для входа с логином и паролем
           const appHtml = `<div class="container" >
           <ul id="list" class="comments">
-            <!-- список рендерится из JS -->
-          </ul>
-          ${comentHTML}
-          <div class="add-form"  id="formAdd">
-            <input id="nameInput" 
-            type="text" 
-            class="add-form-name" 
-            placeholder="Введите ваше имя" value="" />
-
-            <textarea type="textarea" class="add-form-text" 
-            placeholder="Напишите ваш коментарий" 
-            id="userComent"
-              value="">
-              </textarea>
-
-            <div class="add-form-row">
-              <button id="button" 
-              class="add-form-button">Написать</button>
-            </div>
-          </div>
-          </div>`;
-
+            ${comentHTML}
+          </ul> 
+          ${renderForm({token})}`
           appEl.innerHTML = appHtml;
-
+// Делаем условие если токена нет запускаем обработчик на 
+//кнопку Войти, который в свою очередь запускает функцию  renderloginComponent
+// в которую передаются два аргумента setToken и setUser
+           if (!token) {
+           document.getElementById("entranceButton").addEventListener('click', () => {
+              renderloginComponent({
+                setToken:(newToken) => {
+                  console.log(newToken);
+                  // присваеваем token новое значение newToken
+                      token = newToken;
+                    },
+                setUser: (newUser) => {
+                  // присваеваем переменной user новое значение newUser
+                  user = newUser;
+                },
+              });
+            });
+            return;
+          }
+          // находим элементы по их id на странице
           const listElement = document.getElementById("list");
-          const buttonElement = document.getElementById("button");
-          buttonElement.addEventListener('click',(e)  => addElement({e, coment }));
-
+          const nameInputElement = document.getElementById("nameInput");
+          nameInputElement.value = user.name;
+         
+          //нахожу элемент кнопку "Написать" по id
+          const buttonWriteElement = document.getElementById("buttonWrite");
+          // ставлю на кнопку обработчик клика который запускает функцию dobComent или funApi
+          buttonWriteElement.addEventListener('click', () => {
+            const textInputElement = document.getElementById("text-input");
+            const text = textInputElement.value;
+            dobComent ({ text, token });
+          }); 
+            
+// в этом блоке мы делаем возможность коментировать другие коментарии
     const comentTextElement = document.querySelectorAll(".comment-text");
     for (const comentText of comentTextElement) {
       comentText.addEventListener('click', () => {
