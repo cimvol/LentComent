@@ -145,6 +145,16 @@ body {
     border-radius: 18px;
     cursor: pointer;
   }
+  .add-form-button1 {
+    margin-top: 24px;
+    font-size: 24px;
+    padding: 10px 20px;
+    background-color: #bcec30;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    margin-left: 160px;
+  }
 
   .add-form-button:hover {
     opacity: 0.9;

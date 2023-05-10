@@ -7,7 +7,7 @@ export function funcApi() {
       const coment = responseData.comments.map((comment) => {
         return {
           name: comment.author.name,
-          date: new Date(comment.date).toLocaleString().slice(0, -3),
+          date: new Date(comment.date),
           text: comment.text,
           likes: comment.likes,
           isLiked: false,

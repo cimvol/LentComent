@@ -1,9 +1,11 @@
 
 import { funcApi } from "./api.js";
 
+
  let coment = [];
 
  let user = null;
+ 
  let token = null;
 
   funcApi();

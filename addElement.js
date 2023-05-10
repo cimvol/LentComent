@@ -21,7 +21,7 @@ export function addElement ({e, coment}) {
      e.target.textContent = "Публикуется";
     coment.push({
       name: nameInputElement.value,
-      date: new Date(coment.date).toLocaleString().slice(0, -3),
+      date: new Date(coment.date),
       text: textInputElement.value,
       laiks: 0,
     });

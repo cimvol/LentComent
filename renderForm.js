@@ -1,20 +1,24 @@
-
 // Экспортируем данную функцию в другие модули
 // renderForm принимает аргументом переменную token
-export function  renderForm ({ token }) {
+export function  renderForm ({ token, isLoginMode }) {
+  //устанавливаем флажок переключения по умолчанию он true отображается
+  //isLoginMode = true;
+  //форма для ввода логина и пароля 
   // Если в token содержится значение null
     if(!token) {
       // отрисовываем форму входа предлагающую ввести
       //логин и пароль 
         return  `<div class="add-form"> 
-         <h3>Форма входа </h3>
+         <h3>Форма ${isLoginMode ? "входа" : "регистрации"} </h3>
+         ${isLoginMode ? " " : `<input id="nameNewUser"  class="add-form-name"  type="text" placeholder="Имя"/>
+         <br  />`}
       <input id="loginInput"  class="add-form-name"  type="text" placeholder="Логин"/>
       <br  />
       <input id="passwordInput"  class="add-form-name"  type="password" placeholder="Пароль"/>
       <br  />
       <div>
-        <button class="add-form-button" id="entranceButton"> Войти </button>
-        <br  />
+        <button class="add-form-button" id="entranceButton"> ${isLoginMode ? "Bойти" : "зарегистрироваться"}</button>
+        <button class="add-form-button1" id="registrButton"> Зарегистироваться </button>
       </div>
       </div>`;
   } 
@@ -28,6 +32,11 @@ export function  renderForm ({ token }) {
       <button id="buttonWrite" class="add-form-button">Написать</button>
     </div>
   </div>`;
-    }
+  }
 }
+
+
+
+
+
 
