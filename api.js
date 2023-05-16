@@ -30,7 +30,6 @@ export function polComent() {
   }
   
 export function dobComent ({ text, token }) {
-  console.log(text);
     return fetch( "https://webdev-hw-api.vercel.app/api/v2/slava-tsym/comments",{
       method: "POST",
       body: JSON.stringify({

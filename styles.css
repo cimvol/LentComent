@@ -2,12 +2,19 @@ body {
     margin: 0;
   }
 
+  #nameNewUser {
+    text-align: center;
+  }
+
   #loginInput{
     text-align: center;
   }
 
   #passwordInput {
     text-align: center;
+  }
+  .deckribe {
+    color: #ffffff;
   }
 
 

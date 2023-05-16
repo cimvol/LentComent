@@ -14,7 +14,7 @@ export function addElement ({e, coment}) {
     if (nameInputElement.value === "" || textInputElement.value === "") {
      nameInputElement.classList.add('error');
      textInputElement.classList.add('error');
-     return;
+     //return;
    }
 
      e.target.disabled = true;
